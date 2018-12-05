@@ -10,9 +10,6 @@ class KakaoLink extends React.Component {
     window.Kakao.init("1598359c558c0e811105006367eb346d");
   }
 
-  componentDidMount() {
-    this.sendLink();
-  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -20,9 +17,8 @@ class KakaoLink extends React.Component {
     this.setState({text: ""});
   }
   sendLink() {
-    // // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
-    window.Kakao.Link.createDefaultButton({
-      container: "#kakao-link-btn",
+    window.Kakao.Link.sendDefault({
+      // container: "#kakao-link-btn",  // sendDefault에는 container가 필요없다.
       objectType: "text",
       text: this.state.text,
       link: {
@@ -48,7 +44,7 @@ class KakaoLink extends React.Component {
           <button className="btn btn-secondary"
           onClick={ (e) => this.setState({text:""})}
           >다시쓰기</button>
-        <span>{" "}</span>
+          <span>{" "}</span>
           <button
             className="btn btn-primary"
             id="kakao-link-btn"
