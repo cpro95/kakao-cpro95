@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import Header from "./components/Header";
+import KakaoLink from "./components/KakaoLink";
 
 class App extends Component {
   render() {
@@ -18,6 +18,9 @@ class App extends Component {
                   Even if you did not install kakaotalk pc version.
                 </p>
               </div>
+            </div>
+            <div className="col-12">
+              <KakaoLink />
             </div>
           </div>
         </div>
