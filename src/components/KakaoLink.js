@@ -10,11 +10,10 @@ class KakaoLink extends React.Component {
     window.Kakao.init("1598359c558c0e811105006367eb346d");
   }
 
-
   handleSubmit(e) {
     e.preventDefault();
     this.sendLink();
-    this.setState({text: ""});
+    this.setState({ text: "" });
   }
   sendLink() {
     window.Kakao.Link.sendDefault({
@@ -30,28 +29,38 @@ class KakaoLink extends React.Component {
 
   render() {
     return (
-      <div>
-          <div className="form-group">
-            <label htmlFor="FormControlTextarea1">내용 쓰기</label>
+      <div className="section">
+        <div className="field">
+          <label className="label">내용 쓰기</label>
+          <div className="control">
             <textarea
-              className="form-control"
-              id="FormControlTextarea1"
+              className="textarea"
               rows="3"
               value={this.state.text}
               onChange={e => this.setState({ text: e.target.value })}
             />
           </div>
-          <button className="btn btn-secondary"
-          onClick={ (e) => this.setState({text:""})}
-          >다시쓰기</button>
-          <span>{" "}</span>
-          <button
-            className="btn btn-primary"
-            id="kakao-link-btn"
-            onClick={e => this.handleSubmit(e)}
-          >
-            카카오톡 전송
-          </button>
+        </div>
+        <div className="field is-grouped">
+          <div className="control">
+            <button
+              className="button is-primary"
+              onClick={e => this.setState({ text: "" })}
+            >
+              다시쓰기
+            </button>
+            <span> </span>
+          </div>
+          <div className="control">
+            <button
+              className="button is-success"
+              id="kakao-link-btn"
+              onClick={e => this.handleSubmit(e)}
+            >
+              카카오톡 전송
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

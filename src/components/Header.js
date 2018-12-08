@@ -1,32 +1,62 @@
-import React from "react";
+import React, { Component } from "react";
 
-const Layout = () => (
-  <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
-    <a className="navbar-brand font-weight-bold" href="/">
-      Home
-    </a>
-    <button
-      className="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span className="navbar-toggler-icon" />
-    </button>
+class Header extends Component {
+  state = {
+    isActive: false
+  };
 
-    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav ml-auto">
-        <li className="nav-item">
-          <a className="nav-link font-weight-bold" href="/">
-            Home
+  toggleNav = () => {
+    this.setState(prevState => ({
+      isActive: !prevState.isActive
+    }));
+  };
+
+  render() {
+    return (
+      <nav className="navbar is-black">
+        <div className="navbar-brand">
+          <a className="navbar-item has-text-weight-bold" href="/">
+            HOME
           </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-);
 
-export default Layout;
+          <a
+            role="button"
+            className="navbar-burger burger"
+            onClick={this.toggleNav}
+          >
+            <span />
+            <span />
+            <span />
+          </a>
+        </div>
+
+        <div
+          className={
+            this.state.isActive ? "navbar-menu is-active" : "navbar-menu"
+          }
+        >
+          <div className="navbar-start">
+            <a className="navbar-item" href="/">
+              카카오톡
+            </a>
+            {/* <a className="navbar-item">카카오스토리</a> */}
+          </div>
+
+          <div className="navbar-end">
+            <a
+              href="https://github.com/cpro95/kakao-cpro95"
+              className="navbar-item"
+            >
+              <span className="icon">
+                <i className="fab fa-lg fa-github" />
+              </span>
+            </a>
+          </div>
+
+        </div>
+      </nav>
+    );
+  }
+}
+
+export default Header;
