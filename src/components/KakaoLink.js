@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import CardMedia from "@material-ui/core/CardMedia";
 
 const styles = theme => ({
+  media: {
+    height: 0,
+    paddingTop: "56.25%" // 16:9
+  },
   button: {
     margin: theme.spacing.unit
   },
@@ -21,8 +23,8 @@ class Talk extends React.Component {
     super(props);
     this.state = {
       text: "",
-      files: FileList,
-      imageUrl: ""
+      files: [],
+      localUrl: ""
     };
     // 사용할 앱의 JavaScript 키를 설정해 주세요.
     window.Kakao.init("1598359c558c0e811105006367eb346d");
@@ -30,46 +32,48 @@ class Talk extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
-    this.setState({ text: "" });
-    if(this.state.files.length > 0) {
-      console.log("image > 0");
+    // console.log("files length: " + this.state.files.length);
+    if (this.state.files.length > 0) {
+      // console.log("image > 0");
       var files = this.state.files;
       window.Kakao.Link.uploadImage({
         file: files
-      }).then(function(res){
-        console.log(res.infos.original.url);
-        this.setState({imageUrl: res.infos.original.url})
+      }).then(res => {
+        // console.log("image url : " + res.infos.original.url);
+        this.sendLink(res.infos.original.url);
       });
-
-      this.sendLink();
+    } else {
+      this.sendLink(""); // url to blank
     }
   }
 
   handleUpload(e) {
     e.preventDefault();
-    // const files = Array.from(e.target.files);
-    // const files = [...e.target.files];
-    console.log(e.target.files);
-    console.log(e.target.files[0]);
-    console.log(e.target.files[0].name)
-    // console.log(files[0].size);
-    // console.log(files[1].name);
+    const localUrl = URL.createObjectURL(e.target.files[0]);
+    // console.log("localUrl : " + localUrl);
+    this.setState({ localUrl: localUrl });
     this.setState({ files: e.target.files });
-    console.log(this.state.files);
   }
 
-  sendLink() {
+  sendLink(imageUrl) {
+    var url = "";
+    if (imageUrl.length > 0) {
+      url = imageUrl;
+    }
     window.Kakao.Link.sendDefault({
-      // container: "#kakao-link-btn",  // sendDefault에는 container가 필요없다.
-      objectType: "text",
-      text: this.state.text,
-      imageUrl: this.state.imageUrl,
-      link: {
-        mobileWebUrl: "",
-        webUrl: ""
+      objectType: "feed",
+      content: {
+        title: this.state.text,
+        imageUrl: url,
+        link: {
+          webUrl: url,
+          mobileWebUrl: url
+        }
       }
     });
+
+    // setState 초기화
+    this.setState({ text: "",files: [], localUrl: "" });
   }
 
   render() {
@@ -96,38 +100,48 @@ class Talk extends React.Component {
           />
         </div>
         <div>
-          <Button
-            variant="contained"
-            onClick={e => this.setState({ text: "" })}
-          >
+          <Button variant="outlined" onClick={e => this.setState({ text: "" })}>
             다시 쓰기
           </Button>
           <span> </span>
           <Button
-            variant="contained"
+            variant="outlined"
             color="primary"
             id="kakao-link-btn"
             onClick={e => this.handleSubmit(e)}
           >
             카톡 전송
           </Button>
-        </div>
-        <div>
-          <Button component="label" className={classes.button}>
-            Upload
-            <input
-              accept="image/*"
-              className={classes.input}
-              id="raised-button-file"
-              multiple
-              type="file"
-              onChange={e => this.handleUpload(e)}
-            />
-          </Button>
-          <TextField
-            value={this.state.files}
+          <input
+            accept="image/*"
+            className={classes.input}
+            id="button-file"
+            // multiple
+            type="file"
+            onChange={e => this.handleUpload(e)}
           />
+          <label htmlFor="button-file">
+            <Button
+              variant="outlined"
+              color="secondary"
+              component="span"
+              className={classes.button}
+            >
+              이미지 올리기
+            </Button>
+          </label>
         </div>
+        {this.state.localUrl.length > 0 ? (
+          <div>
+            <CardMedia
+              className={classes.media}
+              image={this.state.localUrl}
+              title="Uploaded Image"
+            />
+          </div>
+        ) : (
+          <span />
+        )}
       </div>
     );
   }
