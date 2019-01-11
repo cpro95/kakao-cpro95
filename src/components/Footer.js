@@ -1,18 +1,35 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
-const Footer = () => {
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+    textAlign : 'center'  
+  },
+});
+
+function Footer(props) {
+  const { classes } = props;
+
   return (
-    <footer className="footer">
-      <div className="content has-text-centered">
-        <p>
-          Built on <strong>React</strong> with <strong>Bulma</strong> by Me!{" "}
-          <a href="https://github.com/cpro95">cpro95</a>
-          <br />
-          MIT license
-        </p>
-      </div>
-    </footer>
+    <div>
+      <br />
+      <Paper className={classes.root} elevation={1}>
+        <Typography component="p">
+          Made with React & Material-UI / MIT Licence.
+        </Typography>
+      </Paper>
+    </div>
   );
+}
+
+Footer.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
 
-export default Footer;
+export default withStyles(styles)(Footer);
