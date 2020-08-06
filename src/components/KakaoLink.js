@@ -64,6 +64,7 @@ class Talk extends React.Component {
       objectType: "feed",
       content: {
         title: this.state.text,
+        description: this.state.text,
         imageUrl: url,
         link: {
           webUrl: url,
