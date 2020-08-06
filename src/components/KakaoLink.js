@@ -63,7 +63,7 @@ class Talk extends React.Component {
     window.Kakao.Link.sendDefault({
       objectType: "feed",
       content: {
-        title: this.state.text,
+        title: "KakaoLink from kakao-cpro95.netlify.app",
         description: this.state.text,
         imageUrl: url,
         link: {
