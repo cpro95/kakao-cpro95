@@ -36,7 +36,7 @@ const KakaoLink = (props) => {
   const [files, setFiles] = useState([]);
   const [localUrl, setLocalUrl] = useState("");
 
-  const thandleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     // console.log("files length: " + files.length);
     // console.log("localUrl length:" + localUrl.length);
@@ -122,7 +122,7 @@ const KakaoLink = (props) => {
           variant="outlined"
           color="primary"
           id="kakao-link-btn"
-          onClick={(e) => thandleSubmit(e)}
+          onClick={(e) => handleSubmit(e)}
         >
           카톡 전송
         </Button>
