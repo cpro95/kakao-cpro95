@@ -1,35 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import React from "react";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 
-const styles = theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
-    textAlign : 'center'  
+    textAlign: "center",
   },
-});
+  link: {
+    textDecoration: "none",
+  },
+}));
 
-function Footer(props) {
-  const { classes } = props;
+const Footer = (props) => {
+  const classes = useStyles();
 
   return (
     <div>
-      <br />
-      <Paper className={classes.root} elevation={1}>
+      <Paper className={classes.root} elevation={0}>
         <Typography component="p">
-          Made with React & Material-UI / MIT Licence.
+          <a href="https://blog.naver.com/cpro95" className={classes.link}>
+            링크 : 튜토리얼 보기
+          </a>
+          <p>카카오톡 API와 React, Material-UI로 만들었습니다.</p>
         </Typography>
       </Paper>
     </div>
   );
-}
-
-Footer.propTypes = {
-  classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Footer);
+export default Footer;
