@@ -64,23 +64,41 @@ const KakaoLink = (props) => {
     setFiles(e.target.files);
   };
 
+  const handleChange = (e) => {
+    e.preventDefault();
+    setText(e.target.value);
+  };
+
   const sendLink = (imageUrl) => {
-    var url = "";
+    var url = "http://kakao-cpro95.netlify.app";
     if (imageUrl.length > 0) {
       url = imageUrl;
-    }
-    window.Kakao.Link.sendDefault({
-      objectType: "feed",
-      content: {
-        title: "",
-        description: text,
-        imageUrl: url,
-        link: {
-          webUrl: url,
-          mobileWebUrl: url,
+      // 이미지를 보낼때는 objectType 을 feed로 해야 보낼 수 있다.
+      window.Kakao.Link.sendDefault({
+        objectType: "feed",
+        content: {
+          title: "",
+          description: text,
+          imageUrl: url,
+          link: {
+            webUrl: url,
+            mobileWebUrl: url,
+          },
         },
-      },
-    });
+      });
+    } else {
+      // 이미지가 없을 때
+      // Kakao.Link.sendDefault 의 text 보내기가 버그 픽스가 되었다.
+      // 아래처럼 objectType 으로 'text'를 넣으면 최대 200자까지 메시지를 전달할 수 있다.
+      window.Kakao.Link.sendDefault({
+        objectType: "text",
+        text: text,
+        link: {
+          mobileWebUrl: url,
+          webUrl: url,
+        },
+      });
+    }
 
     // state 초기화
     setText("");
@@ -100,7 +118,7 @@ const KakaoLink = (props) => {
         id="outlined-full-width"
         label="메시지"
         style={{ margin: 8 }}
-        placeholder="여기에 카톡 내용을 써 주세요"
+        placeholder="한번에 200자까지만 전송 가능 (이미지 첨부할 경우 100자만 가능)"
         fullWidth
         autoFocus
         multiline
@@ -111,7 +129,7 @@ const KakaoLink = (props) => {
           shrink: true,
         }}
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => handleChange(e)}
       />
       <div>
         <Button variant="outlined" color="primary" onClick={(e) => clean()}>
